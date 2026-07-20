@@ -318,6 +318,183 @@ tr.row:hover td{background:rgba(255,255,255,.02)}
   .bubble{font-size:12px}
 }
 
+
+/* ---------- ACCOUNTING ---------- */
+.acc-tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.acc-tab{
+  background:var(--panel-2);border:1px solid var(--line-soft);color:var(--muted);
+  font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;
+  padding:9px 15px;border-radius:20px;cursor:pointer;transition:all .18s;min-height:38px;
+}
+.acc-tab.on{border-color:var(--gold-deep);color:var(--gold-bright);background:rgba(201,162,39,.1)}
+.acc-view{display:none}
+.acc-view.on{display:block;animation:fade .25s ease}
+.led-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line-soft);font-size:13px}
+.led-row:last-child{border-bottom:none}
+.led-row .dt{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);white-space:nowrap}
+.led-row .ds .t{font-weight:600;font-size:13px}
+.led-row .ds .a{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);margin-top:2px}
+.led-row .dr,.led-row .cr{font-family:'JetBrains Mono',monospace;font-size:12.5px;text-align:right;min-width:76px}
+.led-row .dr{color:var(--green)} .led-row .cr{color:var(--red)}
+.coa-grp{margin-bottom:6px}
+.coa-h{display:flex;align-items:center;gap:9px;padding:9px 0;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.coa-h::after{content:"";flex:1;height:1px;background:var(--line)}
+.coa-row{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--line-soft);font-size:13px}
+.coa-row:last-child{border-bottom:none}
+.coa-row .cd{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);width:44px;flex-shrink:0}
+.coa-row .cn{flex:1}
+.coa-row .cv{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--gold-bright);font-weight:500}
+.coa-row .cg{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-left:8px}
+.pl-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line-soft);font-size:13.5px}
+.pl-row:last-child{border-bottom:none}
+.pl-row.tot{border-top:1px solid var(--line);border-bottom:none;margin-top:6px;padding-top:14px;font-weight:700;font-size:15px}
+.pl-row .pv{font-family:'JetBrains Mono',monospace;font-weight:500}
+.pl-row .pv.pos{color:var(--green)} .pl-row .pv.neg{color:var(--red)}
+.pl-row .sub{font-size:11px;color:var(--muted);margin-top:2px}
+.pl-note{background:rgba(201,162,39,.07);border:1px solid var(--line);border-radius:11px;padding:14px 16px;margin-top:14px;font-size:12.5px;color:var(--muted);line-height:1.6}
+.pl-note b{color:var(--gold-bright);font-weight:600}
+.bal-bar{height:8px;border-radius:5px;background:var(--panel-2);overflow:hidden;display:flex;margin-top:10px}
+.bal-bar i{display:block;height:100%}
+.drawer-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:13px}
+.drawer-row:last-child{border-bottom:none}
+.drawer-row .dv{font-family:'JetBrains Mono',monospace;color:var(--gold-bright)}
+.drawer-row.match{border-top:1px solid var(--line);margin-top:6px;padding-top:13px;font-weight:600}
+@media(max-width:760px){
+  .led-row{grid-template-columns:1fr auto;row-gap:6px}
+  .led-row .dt{grid-column:1;font-size:10px}
+  .led-row .ds{grid-column:1/-1;order:3}
+  .led-row .dr,.led-row .cr{min-width:0}
+  .acc-tab{font-size:12px;padding:10px 14px;min-height:42px}
+  .coa-row{flex-wrap:wrap}
+}
+
+
+/* ---------- POS v2 ---------- */
+.mode-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.mode-btn{
+  flex:1;min-width:110px;min-height:46px;background:var(--panel-2);
+  border:1px solid var(--line-soft);color:var(--muted);border-radius:11px;
+  font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:7px;transition:all .18s;
+}
+.mode-btn.on{border-color:var(--gold-deep);color:var(--gold-bright);background:rgba(201,162,39,.11)}
+.mode-btn .mi{font-size:15px}
+
+.cust-bar{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:15px 17px;margin-bottom:14px;position:relative}
+.cust-search{display:flex;align-items:center;gap:10px}
+.cust-search .si{font-size:15px;color:var(--muted)}
+.cust-search input{
+  flex:1;background:none;border:none;color:var(--ivory);font-family:'Outfit',sans-serif;
+  font-size:14.5px;outline:none;padding:8px 0;min-width:0;
+}
+.cust-search input::placeholder{color:var(--muted)}
+.cust-clear{background:none;border:none;color:var(--muted);font-size:17px;cursor:pointer;padding:6px 8px;line-height:1}
+.cust-drop{
+  position:absolute;left:0;right:0;top:100%;margin-top:6px;z-index:30;
+  background:var(--panel-2);border:1px solid var(--line);border-radius:12px;
+  overflow:hidden;display:none;box-shadow:0 18px 40px -12px rgba(0,0,0,.8);
+}
+.cust-drop.show{display:block}
+.cust-opt{
+  display:flex;align-items:center;gap:11px;padding:12px 14px;cursor:pointer;
+  border-bottom:1px solid var(--line-soft);transition:background .15s;
+}
+.cust-opt:last-child{border-bottom:none}
+.cust-opt:hover,.cust-opt.hi{background:rgba(201,162,39,.09)}
+.cust-opt .co-n{font-weight:600;font-size:13.5px}
+.cust-opt .co-m{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);margin-top:2px}
+.cust-opt .co-r{margin-left:auto;text-align:right;flex-shrink:0}
+.cust-opt .co-r .ow{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--red)}
+.cust-opt .co-r .cl{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--green)}
+
+.cust-card{display:none;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.cust-card.show{display:flex}
+.cust-card .cc-main{flex:1;min-width:180px}
+.cust-card .cc-n{font-size:16px;font-weight:700;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.cust-card .cc-m{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:3px}
+.cust-stats{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px}
+.cust-stats .cs{min-width:78px}
+.cust-stats .cs .l{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.cust-stats .cs .v{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--gold-bright);font-weight:500;margin-top:3px}
+.cust-stats .cs .v.owe{color:var(--red)}
+.cust-hist{flex:1;min-width:200px;background:var(--panel-2);border:1px solid var(--line-soft);border-radius:11px;padding:12px 14px}
+.cust-hist .hh{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.hist-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line-soft);font-size:12px}
+.hist-row:last-child{border-bottom:none}
+.hist-row .hd{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);flex-shrink:0}
+.hist-row .hi{flex:1;min-width:0}
+.hist-row .hv{font-family:'JetBrains Mono',monospace;color:var(--gold-bright);flex-shrink:0}
+.vip{font-size:9.5px;font-weight:700;letter-spacing:.08em;background:linear-gradient(120deg,var(--gold-bright),var(--gold));color:#15130C;border-radius:20px;padding:3px 9px}
+
+.pos2{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;align-items:start}
+.pick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pick{
+  background:var(--panel);border:1px solid var(--line-soft);border-radius:12px;padding:13px;
+  cursor:pointer;text-align:left;color:var(--ivory);font-family:'Outfit',sans-serif;transition:all .15s;
+}
+.pick:hover{border-color:var(--gold-deep)}
+.pick .pi{font-size:21px}
+.pick .pn{font-weight:600;font-size:12.5px;margin-top:7px;line-height:1.3}
+.pick .pm{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:3px}
+.pick .pk{margin-top:6px}
+
+.line{background:var(--panel-2);border:1px solid var(--line-soft);border-radius:11px;padding:12px 13px;margin-bottom:9px}
+.line-top{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.line-top .ln{font-weight:600;font-size:13px;flex:1;min-width:0}
+.line-x{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:2px 6px;line-height:1}
+.line-x:hover{color:var(--red)}
+.line-calc{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.lc{min-width:0}
+.lc .l{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+.lc input{
+  width:100%;background:var(--panel);border:1px solid var(--line-soft);border-radius:7px;
+  color:var(--ivory);font-family:'JetBrains Mono',monospace;font-size:13px;
+  padding:7px 8px;outline:none;-moz-appearance:textfield;
+}
+.lc input::-webkit-outer-spin-button,.lc input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.lc input:focus{border-color:var(--gold)}
+.lc select{
+  width:100%;background:var(--panel);border:1px solid var(--line-soft);border-radius:7px;
+  color:var(--ivory);font-family:'JetBrains Mono',monospace;font-size:13px;padding:7px 8px;outline:none;
+}
+.line-out{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;padding-top:9px;border-top:1px dashed var(--line-soft);flex-wrap:wrap;gap:6px}
+.line-out .lo-f{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted)}
+.line-out .lo-t{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--gold-bright);font-weight:600}
+
+.till{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:17px;position:sticky;top:14px}
+.till h3{font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:4px}
+.till .tsub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:13px}
+.sum-row{display:flex;justify-content:space-between;padding:7px 0;font-size:12.5px;color:var(--muted)}
+.sum-row span:last-child{font-family:'JetBrains Mono',monospace;color:var(--ivory)}
+.sum-row.big{border-top:1px solid var(--line);margin-top:8px;padding-top:13px;font-size:16px;font-weight:700;color:var(--ivory)}
+.sum-row.big span:last-child{font-family:'Cormorant Garamond',serif;font-size:25px;color:var(--gold-bright);font-weight:700}
+.sum-row.give{color:var(--green)}
+.sum-row.give span:last-child{color:var(--green)}
+.empty-t{color:var(--muted);font-size:12.5px;text-align:center;padding:22px 0}
+.pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}
+.pbtn{
+  background:var(--panel-2);border:1px solid var(--line-soft);color:var(--ivory);border-radius:9px;
+  padding:11px 8px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;
+  min-height:44px;transition:all .15s;
+}
+.pbtn.on{border-color:var(--gold-deep);background:rgba(201,162,39,.11);color:var(--gold-bright)}
+.acct-warn{
+  background:rgba(224,92,92,.09);border:1px solid rgba(224,92,92,.3);border-radius:9px;
+  padding:10px 12px;margin-top:10px;font-size:11.5px;color:var(--ivory);display:none;
+}
+.acct-warn.show{display:block}
+.acct-warn b{color:var(--red)}
+
+@media(max-width:1080px){ .pos2{grid-template-columns:1fr} .till{position:static} }
+@media(max-width:760px){
+  .pick-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .line-calc{grid-template-columns:1fr 1fr;gap:7px}
+  .mode-btn{min-width:0;flex:1 1 30%;font-size:12.5px}
+  .cust-card{flex-direction:column}
+  .cust-hist{width:100%}
+  .till{padding:15px}
+}
+
 /* ---------- RESPONSIVE ---------- */
 @media(max-width:1080px){
   .g4{grid-template-columns:repeat(2,1fr)}
@@ -510,6 +687,10 @@ tr.row:hover td{background:rgba(255,255,255,.02)}
     <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="4"/><path d="M12 10v2l1.4 1.4"/></svg>
     Certificate Vault
   </button>
+  <button class="nav-btn" data-page="acc">
+    <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/><circle cx="16" cy="16" r="2"/></svg>
+    Accounting
+  </button>
   <button class="nav-btn" data-page="rpt">
     <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
     Reports
@@ -611,21 +792,65 @@ tr.row:hover td{background:rgba(255,255,255,.02)}
 <section class="page" id="pos">
   <div class="page-head">
     <h2>Point of Sale</h2>
-    <span class="date">CASHIER · MAIN BRANCH</span>
+    <span class="date" id="posRate">21K RATE · $94.85/g</span>
   </div>
-  <div class="pos-wrap">
-    <div class="pos-grid" id="posGrid"></div>
-    <div class="cart">
-      <h3>Current Sale</h3>
-      <div id="cartLines"><div class="empty-cart">Tap items to add them</div></div>
-      <div class="cart-total"><span>Total</span><span id="cartTotal">$0</span></div>
-      <div class="pay-row">
-        <button class="pay-btn">💵 Cash USD</button>
-        <button class="pay-btn">💴 Cash LBP</button>
-        <button class="pay-btn">📱 Whish</button>
-        <button class="pay-btn">🔀 Split Payment</button>
+
+  <div class="mode-row">
+    <button class="mode-btn on" data-mode="sell"><span class="mi">💍</span> Sell</button>
+    <button class="mode-btn" data-mode="buy"><span class="mi">🪙</span> Buy old gold</button>
+    <button class="mode-btn" data-mode="exch"><span class="mi">🔄</span> Exchange</button>
+  </div>
+
+  <!-- CUSTOMER -->
+  <div class="cust-bar">
+    <div class="cust-search" id="custSearchWrap">
+      <span class="si">🔍</span>
+      <input type="text" id="custInput" placeholder="Search customer by name or phone…" autocomplete="off">
+      <button class="cust-clear" id="custClear" style="display:none">✕</button>
+    </div>
+    <div class="cust-drop" id="custDrop"></div>
+
+    <div class="cust-card" id="custCard">
+      <div class="cc-main">
+        <div class="cc-n"><span id="ccName">—</span><span class="vip" id="ccVip" style="display:none">VIP</span></div>
+        <div class="cc-m" id="ccPhone">—</div>
+        <div class="cust-stats">
+          <div class="cs"><div class="l">Total bought</div><div class="v" id="ccTotal">—</div></div>
+          <div class="cs"><div class="l">Balance</div><div class="v" id="ccBal">—</div></div>
+          <div class="cs"><div class="l">Last visit</div><div class="v" id="ccLast">—</div></div>
+        </div>
       </div>
-      <button class="checkout" onclick="alert('Demo: invoice printed + WhatsApp receipt sent ✔')">Complete Sale &amp; Print</button>
+      <div class="cust-hist">
+        <div class="hh">Purchase history</div>
+        <div id="ccHist"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALE -->
+  <div class="pos2">
+    <div>
+      <div class="section-title" style="margin-top:0" id="pickTitle">Add item to sale</div>
+      <div class="pick-grid" id="pickGrid"></div>
+
+      <div class="section-title" id="linesTitle">Sale lines — weight × rate + making</div>
+      <div id="lines"><div class="empty-t">Tap an item above to add it</div></div>
+    </div>
+
+    <div class="till">
+      <h3 id="tillTitle">Current Sale</h3>
+      <div class="tsub" id="tillCust">No customer selected</div>
+      <div id="tillSum"><div class="empty-t">Nothing added yet</div></div>
+
+      <div class="pay-grid">
+        <button class="pbtn on" data-pay="cash">💵 Cash USD</button>
+        <button class="pbtn" data-pay="lbp">💴 Cash LBP</button>
+        <button class="pbtn" data-pay="whish">📱 Whish</button>
+        <button class="pbtn" data-pay="acct">📒 On account</button>
+      </div>
+      <div class="acct-warn" id="acctWarn">Adds to customer balance — appears in <b>Debts</b> tomorrow, reminder prepared after 3 days.</div>
+
+      <button class="checkout" id="posDone" style="margin-top:12px">Complete &amp; send invoice</button>
     </div>
   </div>
 </section>
@@ -927,6 +1152,163 @@ tr.row:hover td{background:rgba(255,255,255,.02)}
   </div>
 </section>
 
+
+<!-- ============ ACCOUNTING ============ -->
+<section class="page" id="acc">
+  <div class="page-head">
+    <h2>Accounting</h2>
+    <span class="date">JULY 2026 · BOOKS BALANCED ✓</span>
+  </div>
+
+  <div class="grid g4">
+    <div class="card stat"><div class="lbl">Cash on hand</div><div class="val gold-txt">$14,280</div><div class="sub">drawer + safe</div></div>
+    <div class="card stat"><div class="lbl">Receivables</div><div class="val">$6,470</div><div class="sub">+ 45.00 g owed in gold</div></div>
+    <div class="card stat"><div class="lbl">Payables</div><div class="val" style="color:var(--red)">$8,900</div><div class="sub">2 suppliers · Dubai + local</div></div>
+    <div class="card stat"><div class="lbl">Net profit — July</div><div class="val" style="color:var(--green)">$11,240</div><div class="sub">trading $9,180 · rate $2,060</div></div>
+  </div>
+
+  <div class="acc-tabs" style="margin-top:20px">
+    <button class="acc-tab on" data-acc="pl">Profit &amp; Loss</button>
+    <button class="acc-tab" data-acc="led">Ledger</button>
+    <button class="acc-tab" data-acc="coa">Chart of Accounts</button>
+    <button class="acc-tab" data-acc="cash">Cash &amp; Drawer</button>
+    <button class="acc-tab" data-acc="tb">Trial Balance</button>
+  </div>
+
+  <!-- ---- P&L ---- -->
+  <div class="acc-view on" id="acc-pl">
+    <div class="grid g2">
+      <div class="card">
+        <div class="section-title" style="margin-top:0">Profit &amp; Loss — July 2026</div>
+        <div class="pl-row"><div>Gold sales<div class="sub">312 pieces · 1,840 g</div></div><span class="pv">$96,420</span></div>
+        <div class="pl-row"><div>Making charges<div class="sub">labour on sold pieces</div></div><span class="pv">$7,340</span></div>
+        <div class="pl-row"><div>Repair income<div class="sub">28 tickets closed</div></div><span class="pv">$1,180</span></div>
+        <div class="pl-row"><div>Cost of gold sold<div class="sub">at purchase rate</div></div><span class="pv neg">−$87,420</span></div>
+        <div class="pl-row"><div>Workshop wages<div class="sub">4 workers</div></div><span class="pv neg">−$3,200</span></div>
+        <div class="pl-row"><div>Gold loss (baradi unrecovered)<div class="sub">14.2 g above tolerance</div></div><span class="pv neg">−$1,320</span></div>
+        <div class="pl-row"><div>Rent, power, other<div class="sub">shop overheads</div></div><span class="pv neg">−$3,820</span></div>
+        <div class="pl-row tot"><span>Trading profit</span><span class="pv pos">$9,180</span></div>
+      </div>
+      <div class="card">
+        <div class="section-title" style="margin-top:0">Where the profit came from</div>
+        <div class="pl-row"><div>Trading margin<div class="sub">your actual buying &amp; selling skill</div></div><span class="pv pos">$9,180</span></div>
+        <div class="pl-row"><div>Gold rate movement<div class="sub">stock revalued · rate +1.8% this month</div></div><span class="pv pos">$2,060</span></div>
+        <div class="pl-row tot"><span>Net profit</span><span class="pv pos">$11,240</span></div>
+        <div class="bal-bar">
+          <i style="width:81.7%;background:linear-gradient(90deg,var(--gold-bright),var(--gold))"></i>
+          <i style="width:18.3%;background:var(--blue)"></i>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--muted)">
+          <span>■ Trading 81.7%</span><span>■ Rate movement 18.3%</span>
+        </div>
+        <div class="pl-note">Most software shows one profit number. <b>This separates them.</b> If the gold price falls next month, your trading profit stays — but the rate portion disappears. Knowing the difference is knowing whether your business is actually making money.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---- LEDGER ---- -->
+  <div class="acc-view" id="acc-led">
+    <div class="card">
+      <div class="section-title" style="margin-top:0">Double-entry ledger — every transaction, both sides</div>
+      <div class="led-row"><span class="dt">20 JUL</span><div class="ds"><div class="t">Sale INV-1184 · 21K bangle 15.0 g</div><div class="a">Dr Cash 1010 · Cr Gold Sales 4010</div></div><span class="dr">+1,420</span><span class="cr">−1,420</span></div>
+      <div class="led-row"><span class="dt">20 JUL</span><div class="ds"><div class="t">Purchase — used gold from walk-in 12.3 g</div><div class="a">Dr Used Gold Stock 1210 · Cr Cash 1010</div></div><span class="dr">+1,090</span><span class="cr">−1,090</span></div>
+      <div class="led-row"><span class="dt">19 JUL</span><div class="ds"><div class="t">Workshop issue — Hagop job A-0147 · 50 g</div><div class="a">Dr Gold with Workers 1220 · Cr Gold Stock 1200</div></div><span class="dr">+4,647</span><span class="cr">−4,647</span></div>
+      <div class="led-row"><span class="dt">19 JUL</span><div class="ds"><div class="t">Payment received — V. Kaloustian</div><div class="a">Dr Cash 1010 · Cr Receivables 1100</div></div><span class="dr">+500</span><span class="cr">−500</span></div>
+      <div class="led-row"><span class="dt">18 JUL</span><div class="ds"><div class="t">Supplier payment — Dubai PO-031</div><div class="a">Dr Payables 2010 · Cr Bank 1020</div></div><span class="dr">+6,200</span><span class="cr">−6,200</span></div>
+      <div class="led-row"><span class="dt">18 JUL</span><div class="ds"><div class="t">Owner draw — personal</div><div class="a">Dr Owner Drawings 3020 · Cr Cash 1010</div></div><span class="dr">+800</span><span class="cr">−800</span></div>
+      <div class="led-row"><span class="dt">17 JUL</span><div class="ds"><div class="t">Baradi refining return · 231 g fine</div><div class="a">Dr Gold Stock 1200 · Cr Scrap Pot 1230</div></div><span class="dr">+21,470</span><span class="cr">−21,470</span></div>
+      <div class="led-row"><span class="dt">17 JUL</span><div class="ds"><div class="t">Shop rent — July</div><div class="a">Dr Rent Expense 5010 · Cr Cash 1010</div></div><span class="dr">+1,400</span><span class="cr">−1,400</span></div>
+      <p style="color:var(--muted);font-size:12px;margin-top:14px">Every movement posts to two accounts automatically — you never type a journal entry. Sell a ring, the system debits cash and credits sales. Issue gold to a worker, it moves from stock to that worker's account. The books balance themselves.</p>
+    </div>
+  </div>
+
+  <!-- ---- CHART OF ACCOUNTS ---- -->
+  <div class="acc-view" id="acc-coa">
+    <div class="grid g2">
+      <div class="card">
+        <div class="coa-grp">
+          <div class="coa-h">Assets</div>
+          <div class="coa-row"><span class="cd">1010</span><span class="cn">Cash on hand</span><span class="cv">$14,280</span></div>
+          <div class="coa-row"><span class="cd">1020</span><span class="cn">Bank account</span><span class="cv">$22,400</span></div>
+          <div class="coa-row"><span class="cd">1100</span><span class="cn">Receivables — customers</span><span class="cv">$6,470</span></div>
+          <div class="coa-row"><span class="cd">1110</span><span class="cn">Receivables — gold</span><span class="cv">45.00 g</span></div>
+          <div class="coa-row"><span class="cd">1200</span><span class="cn">Gold stock — jewelry</span><span class="cv">$189,100</span><span class="cg">2,111 g</span></div>
+          <div class="coa-row"><span class="cd">1210</span><span class="cn">Used gold stock</span><span class="cv">$15,400</span><span class="cg">174 g</span></div>
+          <div class="coa-row"><span class="cd">1220</span><span class="cn">Gold with workers</span><span class="cv">$29,030</span><span class="cg">312 g</span></div>
+          <div class="coa-row"><span class="cd">1230</span><span class="cn">Baradi / scrap pot</span><span class="cv">$5,050</span><span class="cg">54 g</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="coa-grp">
+          <div class="coa-h">Liabilities &amp; Equity</div>
+          <div class="coa-row"><span class="cd">2010</span><span class="cn">Payables — suppliers</span><span class="cv">$8,900</span></div>
+          <div class="coa-row"><span class="cd">2020</span><span class="cn">Customer deposits</span><span class="cv">$2,150</span></div>
+          <div class="coa-row"><span class="cd">3010</span><span class="cn">Owner capital</span><span class="cv">$240,000</span></div>
+          <div class="coa-row"><span class="cd">3020</span><span class="cn">Owner drawings</span><span class="cv">−$4,800</span></div>
+        </div>
+        <div class="coa-grp" style="margin-top:14px">
+          <div class="coa-h">Income &amp; Expense</div>
+          <div class="coa-row"><span class="cd">4010</span><span class="cn">Gold sales</span><span class="cv">$96,420</span></div>
+          <div class="coa-row"><span class="cd">4020</span><span class="cn">Making charges</span><span class="cv">$7,340</span></div>
+          <div class="coa-row"><span class="cd">4030</span><span class="cn">Repair income</span><span class="cv">$1,180</span></div>
+          <div class="coa-row"><span class="cd">5010</span><span class="cn">Rent &amp; utilities</span><span class="cv">$3,820</span></div>
+          <div class="coa-row"><span class="cd">5020</span><span class="cn">Workshop wages</span><span class="cv">$3,200</span></div>
+          <div class="coa-row"><span class="cd">5030</span><span class="cn">Gold loss — unrecovered</span><span class="cv">$1,320</span></div>
+        </div>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:12.5px;margin-top:14px">Accounts carry <b style="color:var(--gold-bright)">both a dollar and a gram balance</b> where it matters — gold stock, worker holdings, and gold owed by customers. No other accounting package does this, because no other package was built for a gold house.</p>
+  </div>
+
+  <!-- ---- CASH & DRAWER ---- -->
+  <div class="acc-view" id="acc-cash">
+    <div class="grid g2">
+      <div class="card">
+        <div class="section-title" style="margin-top:0">Cash movement — today</div>
+        <div class="drawer-row"><span>Opening drawer</span><span class="dv">$1,200</span></div>
+        <div class="drawer-row"><span>Cash sales</span><span class="dv" style="color:var(--green)">+$3,410</span></div>
+        <div class="drawer-row"><span>Payments received</span><span class="dv" style="color:var(--green)">+$500</span></div>
+        <div class="drawer-row"><span>Gold purchases (paid out)</span><span class="dv" style="color:var(--red)">−$1,090</span></div>
+        <div class="drawer-row"><span>Expenses paid</span><span class="dv" style="color:var(--red)">−$180</span></div>
+        <div class="drawer-row"><span>Owner draw</span><span class="dv" style="color:var(--red)">−$800</span></div>
+        <div class="drawer-row match"><span>Expected in drawer</span><span class="dv">$3,040</span></div>
+        <div class="drawer-row match" style="border:none;margin:0;padding-top:6px"><span>Counted at close</span><span class="dv" style="color:var(--green)">$3,040 ✓</span></div>
+      </div>
+      <div class="card">
+        <div class="section-title" style="margin-top:0">Expenses — July</div>
+        <div class="pl-row"><div>Shop rent</div><span class="pv">$1,400</span></div>
+        <div class="pl-row"><div>Electricity &amp; generator</div><span class="pv">$680</span></div>
+        <div class="pl-row"><div>Workshop wages</div><span class="pv">$3,200</span></div>
+        <div class="pl-row"><div>Security &amp; insurance</div><span class="pv">$540</span></div>
+        <div class="pl-row"><div>Marketing &amp; ads</div><span class="pv">$420</span></div>
+        <div class="pl-row"><div>Supplies &amp; tools</div><span class="pv">$380</span></div>
+        <div class="pl-row"><div>Owner drawings</div><span class="pv">$4,800</span></div>
+        <div class="pl-row tot"><span>Total out</span><span class="pv neg">$11,420</span></div>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:12.5px;margin-top:14px">Owner draws are tagged separately from business expenses — so your profit figure stays honest, and you can see exactly how much you took out of the shop this month.</p>
+  </div>
+
+  <!-- ---- TRIAL BALANCE ---- -->
+  <div class="acc-view" id="acc-tb">
+    <div class="card">
+      <div class="section-title" style="margin-top:0">Trial balance — 20 July 2026</div>
+      <div class="led-row" style="border-bottom:1px solid var(--line)"><span class="dt">CODE</span><div class="ds"><div class="t" style="font-size:11px;color:var(--muted);letter-spacing:.1em">ACCOUNT</div></div><span class="dr" style="color:var(--muted);font-size:10px">DEBIT</span><span class="cr" style="color:var(--muted);font-size:10px">CREDIT</span></div>
+      <div class="led-row"><span class="dt">1010</span><div class="ds"><div class="t">Cash on hand</div></div><span class="dr">14,280</span><span class="cr">—</span></div>
+      <div class="led-row"><span class="dt">1020</span><div class="ds"><div class="t">Bank account</div></div><span class="dr">22,400</span><span class="cr">—</span></div>
+      <div class="led-row"><span class="dt">1100</span><div class="ds"><div class="t">Receivables</div></div><span class="dr">6,470</span><span class="cr">—</span></div>
+      <div class="led-row"><span class="dt">1200</span><div class="ds"><div class="t">Gold stock</div></div><span class="dr">189,100</span><span class="cr">—</span></div>
+      <div class="led-row"><span class="dt">1220</span><div class="ds"><div class="t">Gold with workers</div></div><span class="dr">29,030</span><span class="cr">—</span></div>
+      <div class="led-row"><span class="dt">2010</span><div class="ds"><div class="t">Payables — suppliers</div></div><span class="dr">—</span><span class="cr">8,900</span></div>
+      <div class="led-row"><span class="dt">3010</span><div class="ds"><div class="t">Owner capital</div></div><span class="dr">—</span><span class="cr">240,000</span></div>
+      <div class="led-row"><span class="dt">4010</span><div class="ds"><div class="t">Gold sales</div></div><span class="dr">—</span><span class="cr">96,420</span></div>
+      <div class="led-row" style="border-top:1px solid var(--line);font-weight:700"><span class="dt">—</span><div class="ds"><div class="t">TOTAL</div></div><span class="dr">352,940</span><span class="cr">352,940</span></div>
+      <div style="text-align:center;margin-top:16px;padding:12px;border-radius:10px;background:rgba(76,175,125,.08);border:1px solid rgba(76,175,125,.3);color:var(--green);font-weight:600;font-size:13.5px">Books balanced ✓ — debits equal credits</div>
+      <p style="color:var(--muted);font-size:12px;margin-top:14px">Ready for your accountant at any time. Export the full trial balance, ledger and P&amp;L to Excel or PDF — no more shoebox of receipts at year end.</p>
+    </div>
+  </div>
+</section>
+
 </main>
 </div>
 
@@ -957,41 +1339,6 @@ document.querySelectorAll('.nav-btn').forEach(function(btn){
     }
   });
 });
-
-// ----- POS demo -----
-var items = [
-  {ic:'💍', n:'21K Twist Ring', m:'4.2g · 21K', p:480},
-  {ic:'📿', n:'21K Chain Bracelet', m:'8.0g · 21K', p:840},
-  {ic:'💎', n:'Diamond Solitaire 0.5ct', m:'3.1g · 18K', p:1950},
-  {ic:'🪙', n:'Gold Lira (Ottoman)', m:'7.2g · 22K', p:760},
-  {ic:'👶', n:'18K Baby Bracelet', m:'2.4g · 18K', p:245},
-  {ic:'💚', n:'Emerald Ring 1.2ct', m:'5.6g · 18K', p:1590},
-  {ic:'✨', n:'21K Wedding Set', m:'11.4g · 21K', p:1260},
-  {ic:'⛓️', n:'18K Necklace 45cm', m:'6.1g · 18K', p:585},
-  {ic:'🧿', n:'Evil Eye Pendant 18K', m:'1.8g · 18K', p:210}
-];
-var cart = {};
-var grid = document.getElementById('posGrid');
-items.forEach(function(it, i){
-  var b = document.createElement('button');
-  b.className = 'pos-item';
-  b.innerHTML = '<div class="ic">'+it.ic+'</div><div class="n">'+it.n+'</div><div class="m">'+it.m+'</div><div class="p">$'+it.p.toLocaleString()+'</div>';
-  b.onclick = function(){ cart[i] = (cart[i]||0)+1; renderCart(); };
-  grid.appendChild(b);
-});
-function renderCart(){
-  var box = document.getElementById('cartLines');
-  var keys = Object.keys(cart);
-  if(!keys.length){ box.innerHTML = '<div class="empty-cart">Tap items to add them</div>'; document.getElementById('cartTotal').textContent='$0'; return; }
-  var total = 0, html = '';
-  keys.forEach(function(k){
-    var it = items[k], q = cart[k];
-    total += it.p*q;
-    html += '<div class="cart-line"><span>'+it.ic+' '+it.n+' <span class="q">×'+q+'</span></span><span class="mono">$'+(it.p*q).toLocaleString()+'</span></div>';
-  });
-  box.innerHTML = html;
-  document.getElementById('cartTotal').textContent = '$'+total.toLocaleString();
-}
 
 // ----- Workshop / Baradi calculator -----
 (function(){
@@ -1048,6 +1395,245 @@ function renderCart(){
       panel.scrollIntoView({behavior:'smooth',block:'nearest'});
     });
   });
+})();
+
+
+// ----- Accounting sub-tabs -----
+document.querySelectorAll('.acc-tab').forEach(function(t){
+  t.addEventListener('click', function(){
+    document.querySelectorAll('.acc-tab').forEach(function(x){x.classList.remove('on')});
+    document.querySelectorAll('.acc-view').forEach(function(v){v.classList.remove('on')});
+    t.classList.add('on');
+    var v=document.getElementById('acc-'+t.dataset.acc);
+    if(v) v.classList.add('on');
+  });
+});
+
+
+// ================= POS v2 =================
+(function(){
+  var RATE = {24:108.40, 22:99.37, 21:94.85, 18:81.30};
+  var PURITY = {24:0.999, 22:0.916, 21:0.875, 18:0.750};
+  var BUY_SPREAD = 0.93; // buy at 93% of sell rate
+
+  var CUSTOMERS = [
+    {n:'Rita Kassab', p:'03 61 44 82', tot:'$8,420', bal:-380, last:'19 Jul 2026', vip:false,
+     h:[['19 Jul','21K bangle 12.0 g','$1,180'],['04 May','18K earrings','$340'],['12 Mar','21K chain 8 g','$790']]},
+    {n:'Georges Azar', p:'71 20 55 09', tot:'$14,900', bal:-1250, last:'16 Jul 2026', vip:true,
+     h:[['16 Jul','Engagement set 18K','$2,400'],['22 Feb','Diamond solitaire','$1,950'],['08 Jan','21K wedding band','$620']]},
+    {n:'Anahid Tashjian', p:'03 61 77 20', tot:'$22,340', bal:0, last:'14 Jul 2026', vip:true,
+     h:[['14 Jul','Ring resize 21K','$25'],['30 Jun','21K twist ring','$480'],['11 Apr','Gold lira ×3','$2,280']]},
+    {n:'Karnig Hovsepian', p:'70 42 18 63', tot:'$6,120', bal:0, last:'12 Jul 2026', vip:false,
+     h:[['12 Jul','Chain solder 18K','$18'],['19 May','18K necklace 45cm','$585']]},
+    {n:'Abou Elias', p:'76 88 31 05', tot:'$41,700', bal:0, gold:45.0, last:'18 Jul 2026', vip:true,
+     h:[['18 Jul','Trade — 21K scrap 120 g','45.00 g owed'],['02 Jul','Gold bars 2×50 g','$10,840']]},
+    {n:'Maya Haddad', p:'03 90 12 47', tot:'$3,880', bal:-640, last:'14 Jul 2026', vip:false,
+     h:[['14 Jul','18K necklace','$640'],['20 Mar','18K baby bracelet','$245']]},
+    {n:'Nishan Terzian', p:'71 55 60 12', tot:'$18,250', bal:-2100, last:'09 Jul 2026', vip:true,
+     h:[['09 Jul','Wedding set 21K','$2,100'],['15 Jun','21K chain bracelet','$840']]},
+    {n:'Walk-in customer', p:'no phone on file', tot:'—', bal:0, last:'—', vip:false, walkin:true, h:[]}
+  ];
+
+  var CATALOG = [
+    {ic:'💍', n:'21K Twist Ring',      w:4.20,  k:21, st:0,    mk:35},
+    {ic:'📿', n:'21K Chain Bracelet',  w:8.00,  k:21, st:0,    mk:60},
+    {ic:'💎', n:'Diamond Solitaire',   w:3.10,  k:18, st:0.55, mk:180},
+    {ic:'🪙', n:'Gold Lira (Ottoman)', w:7.20,  k:22, st:0,    mk:25},
+    {ic:'👶', n:'18K Baby Bracelet',   w:2.40,  k:18, st:0,    mk:20},
+    {ic:'💚', n:'Emerald Ring 1.2ct',  w:5.60,  k:18, st:0.90, mk:150},
+    {ic:'✨', n:'21K Wedding Set',     w:11.40, k:21, st:0,    mk:95},
+    {ic:'⛓️', n:'18K Necklace 45cm',   w:6.10,  k:18, st:0,    mk:55},
+    {ic:'🧿', n:'Evil Eye Pendant',    w:1.80,  k:18, st:0,    mk:18}
+  ];
+
+  var mode='sell', cust=null, lines=[], pay='cash', uid=0;
+  var $=function(id){return document.getElementById(id)};
+  var money=function(n){return '$'+Math.round(n).toLocaleString('en-US')};
+
+  /* ---------- customer search ---------- */
+  var inp=$('custInput'), drop=$('custDrop'), card=$('custCard'), clr=$('custClear');
+
+  function renderDrop(q){
+    q=(q||'').toLowerCase().trim();
+    var res=CUSTOMERS.filter(function(c){
+      if(c.walkin) return true;
+      return c.n.toLowerCase().indexOf(q)>-1 || c.p.replace(/\s/g,'').indexOf(q.replace(/\s/g,''))>-1;
+    });
+    if(!q) res=CUSTOMERS.slice(0,5).concat(CUSTOMERS[CUSTOMERS.length-1]);
+    if(!res.length){ drop.innerHTML='<div class="cust-opt"><div><div class="co-n">No match</div><div class="co-m">Tap to add as new customer</div></div></div>'; drop.classList.add('show'); return; }
+    drop.innerHTML = res.map(function(c){
+      var idx=CUSTOMERS.indexOf(c);
+      var right = c.gold ? '<div class="ow">'+c.gold.toFixed(2)+' g owed</div>'
+                : (c.bal<0 ? '<div class="ow">'+money(-c.bal)+' owed</div>' : '<div class="cl">clear</div>');
+      return '<div class="cust-opt" data-i="'+idx+'"><div><div class="co-n">'+c.n+'</div><div class="co-m">'+c.p+'</div></div><div class="co-r">'+(c.walkin?'':right)+'</div></div>';
+    }).join('');
+    drop.classList.add('show');
+    drop.querySelectorAll('.cust-opt').forEach(function(o){
+      o.addEventListener('click',function(){
+        var i=o.dataset.i; if(i===undefined) return;
+        pickCust(CUSTOMERS[+i]);
+      });
+    });
+  }
+
+  function pickCust(c){
+    cust=c;
+    drop.classList.remove('show');
+    inp.value=c.n;
+    clr.style.display='block';
+    $('ccName').textContent=c.n;
+    $('ccPhone').textContent=c.p;
+    $('ccTotal').textContent=c.tot;
+    $('ccLast').textContent=c.last;
+    $('ccVip').style.display=c.vip?'inline-block':'none';
+    var bal=$('ccBal');
+    if(c.gold){ bal.textContent=c.gold.toFixed(2)+' g'; bal.className='v owe'; }
+    else if(c.bal<0){ bal.textContent=money(-c.bal)+' owed'; bal.className='v owe'; }
+    else { bal.textContent='Clear'; bal.className='v'; }
+    $('ccHist').innerHTML = c.h.length
+      ? c.h.map(function(r){return '<div class="hist-row"><span class="hd">'+r[0]+'</span><span class="hi">'+r[1]+'</span><span class="hv">'+r[2]+'</span></div>'}).join('')
+      : '<div style="color:var(--muted);font-size:11.5px">No history — first purchase</div>';
+    card.classList.add('show');
+    $('tillCust').textContent=c.n;
+    render();
+  }
+
+  inp.addEventListener('focus',function(){renderDrop(inp.value)});
+  inp.addEventListener('input',function(){ renderDrop(inp.value); if(!inp.value){card.classList.remove('show');cust=null;$('tillCust').textContent='No customer selected';clr.style.display='none';} });
+  clr.addEventListener('click',function(){ inp.value=''; cust=null; card.classList.remove('show'); drop.classList.remove('show'); clr.style.display='none'; $('tillCust').textContent='No customer selected'; render(); });
+  document.addEventListener('click',function(e){
+    if(!e.target.closest('.cust-bar')) drop.classList.remove('show');
+  });
+
+  /* ---------- mode ---------- */
+  document.querySelectorAll('.mode-btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.mode-btn').forEach(function(x){x.classList.remove('on')});
+      b.classList.add('on'); mode=b.dataset.mode; lines=[];
+      $('pickTitle').textContent = mode==='buy' ? 'Weigh what the customer brought' : 'Add item to sale';
+      $('linesTitle').textContent = mode==='buy' ? 'Buying lines — weight × rate − spread' : 'Sale lines — weight × rate + making';
+      $('tillTitle').textContent = mode==='sell'?'Current Sale':(mode==='buy'?'Purchase Voucher':'Exchange Voucher');
+      buildPicks(); render();
+    });
+  });
+
+  /* ---------- item picks ---------- */
+  function buildPicks(){
+    var g=$('pickGrid'); g.innerHTML='';
+    if(mode==='buy'){
+      [[21,'21K scrap'],[18,'18K scrap'],[22,'22K coin / lira'],[24,'24K bar']].forEach(function(o){
+        var b=document.createElement('button'); b.className='pick';
+        b.innerHTML='<div class="pi">🪙</div><div class="pn">'+o[1]+'</div><div class="pm">enter weight</div><div class="pk"><span class="karat">'+o[0]+'K</span></div>';
+        b.onclick=function(){ addLine({ic:'🪙',n:o[1],w:10,k:o[0],st:0,mk:0}); };
+        g.appendChild(b);
+      });
+      return;
+    }
+    CATALOG.forEach(function(it){
+      var b=document.createElement('button'); b.className='pick';
+      b.innerHTML='<div class="pi">'+it.ic+'</div><div class="pn">'+it.n+'</div><div class="pm">'+it.w.toFixed(2)+' g</div><div class="pk"><span class="karat">'+it.k+'K</span></div>';
+      b.onclick=function(){ addLine(it); };
+      g.appendChild(b);
+    });
+  }
+
+  function addLine(it){
+    lines.push({id:++uid, ic:it.ic, n:it.n, w:it.w, k:it.k, st:it.st||0, mk:it.mk||0, buy:(mode==='buy')});
+    render();
+  }
+
+  /* ---------- calc ---------- */
+  function calcLine(L){
+    var net = Math.max(0, L.w - L.st);
+    var fine = net * PURITY[L.k];
+    var rate = RATE[L.k];
+    var gold = L.buy ? fine * RATE[24] * PURITY[L.k] / PURITY[L.k] * BUY_SPREAD : net * rate;
+    if(L.buy) gold = net * rate * BUY_SPREAD;
+    var total = L.buy ? gold : gold + (L.mk||0);
+    return {net:net, fine:fine, rate:rate, gold:gold, total:total};
+  }
+
+  /* ---------- render ---------- */
+  function render(){
+    var box=$('lines');
+    if(!lines.length){
+      box.innerHTML='<div class="empty-t">'+(mode==='buy'?'Tap a karat above to weigh what they brought':'Tap an item above to add it')+'</div>';
+    } else {
+      box.innerHTML = lines.map(function(L){
+        var c=calcLine(L);
+        return '<div class="line" data-id="'+L.id+'">'+
+          '<div class="line-top"><span>'+L.ic+'</span><span class="ln">'+L.n+'</span><button class="line-x" data-x="'+L.id+'">✕</button></div>'+
+          '<div class="line-calc">'+
+            '<div class="lc"><span class="l">Gross g</span><input type="number" step="0.01" min="0" data-f="w" data-id="'+L.id+'" value="'+L.w.toFixed(2)+'" inputmode="decimal"></div>'+
+            '<div class="lc"><span class="l">Karat</span><select data-f="k" data-id="'+L.id+'">'+[24,22,21,18].map(function(k){return '<option value="'+k+'"'+(k===L.k?' selected':'')+'>'+k+'K</option>'}).join('')+'</select></div>'+
+            '<div class="lc"><span class="l">Stone g</span><input type="number" step="0.01" min="0" data-f="st" data-id="'+L.id+'" value="'+L.st.toFixed(2)+'" inputmode="decimal"></div>'+
+            '<div class="lc"><span class="l">'+(L.buy?'—':'Making $')+'</span><input type="number" step="1" min="0" data-f="mk" data-id="'+L.id+'" value="'+(L.mk||0)+'" inputmode="decimal"'+(L.buy?' disabled':'')+'></div>'+
+          '</div>'+
+          '<div class="line-out"><span class="lo-f">net '+c.net.toFixed(2)+' g · fine '+c.fine.toFixed(2)+' g · @ $'+c.rate.toFixed(2)+'/g'+(L.buy?' − spread':'')+'</span><span class="lo-t">'+money(c.total)+'</span></div>'+
+        '</div>';
+      }).join('');
+      box.querySelectorAll('input,select').forEach(function(f){
+        f.addEventListener('input',function(){
+          var L=lines.filter(function(x){return x.id==f.dataset.id})[0]; if(!L) return;
+          var v=parseFloat(f.value); if(isNaN(v)||v<0) v=0;
+          L[f.dataset.f]= (f.dataset.f==='k') ? parseInt(f.value,10) : v;
+          renderTill();
+          var row=box.querySelector('.line[data-id="'+L.id+'"] .line-out');
+          if(row){ var c=calcLine(L);
+            row.innerHTML='<span class="lo-f">net '+c.net.toFixed(2)+' g · fine '+c.fine.toFixed(2)+' g · @ $'+c.rate.toFixed(2)+'/g'+(L.buy?' − spread':'')+'</span><span class="lo-t">'+money(c.total)+'</span>';
+          }
+        });
+      });
+      box.querySelectorAll('.line-x').forEach(function(b){
+        b.addEventListener('click',function(){ lines=lines.filter(function(x){return x.id!=b.dataset.x}); render(); });
+      });
+    }
+    renderTill();
+  }
+
+  function renderTill(){
+    var t=$('tillSum');
+    if(!lines.length){ t.innerHTML='<div class="empty-t">Nothing added yet</div>'; return; }
+    var goldT=0, mkT=0, fineT=0, netT=0;
+    lines.forEach(function(L){ var c=calcLine(L); goldT+=c.gold; mkT+=(L.buy?0:(L.mk||0)); fineT+=c.fine; netT+=c.net; });
+    var total=goldT+mkT;
+    var h='';
+    h+='<div class="sum-row"><span>Gold weight</span><span>'+netT.toFixed(2)+' g net</span></div>';
+    h+='<div class="sum-row"><span>Fine gold</span><span>'+fineT.toFixed(2)+' g</span></div>';
+    h+='<div class="sum-row"><span>'+(mode==='buy'?'Gold value (− spread)':'Gold value')+'</span><span>'+money(goldT)+'</span></div>';
+    if(mode!=='buy') h+='<div class="sum-row"><span>Making charges</span><span>'+money(mkT)+'</span></div>';
+    if(mode!=='buy' && cust && cust.bal<0) h+='<div class="sum-row"><span>Previous balance</span><span style="color:var(--red)">'+money(-cust.bal)+'</span></div>';
+    if(mode==='buy' && cust && cust.bal<0) h+='<div class="sum-row"><span>Owes you</span><span style="color:var(--red)">'+money(-cust.bal)+' — offset?</span></div>';
+    if(mode==='buy'){
+      h+='<div class="sum-row big give"><span>Pay customer</span><span>'+money(total)+'</span></div>';
+    } else {
+      var due = total + (cust && cust.bal<0 ? -cust.bal : 0);
+      h+='<div class="sum-row big"><span>Total due</span><span>'+money(due)+'</span></div>';
+    }
+    t.innerHTML=h;
+  }
+
+  /* ---------- payment ---------- */
+  document.querySelectorAll('.pbtn').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.pbtn').forEach(function(x){x.classList.remove('on')});
+      b.classList.add('on'); pay=b.dataset.pay;
+      $('acctWarn').classList.toggle('show', pay==='acct');
+    });
+  });
+
+  $('posDone').addEventListener('click',function(){
+    if(!lines.length){ alert('Add at least one item first.'); return; }
+    if(!cust){ alert('Select a customer first — every invoice needs a name.'); return; }
+    var verb = mode==='buy'?'Purchase voucher':'Invoice';
+    var extra = pay==='acct' ? '\n\nAdded to '+cust.n+"'s balance — will appear in Debts." : '';
+    alert('Demo: '+verb+' saved for '+cust.n+'.\nPDF sent to WhatsApp '+cust.p+' ✔'+extra);
+  });
+
+  buildPicks(); render();
+
+  // keep POS rate label in sync with ticker
+  var rl=$('posRate'); if(rl) rl.textContent='21K RATE · $'+RATE[21].toFixed(2)+'/g';
 })();
 
 </script>
