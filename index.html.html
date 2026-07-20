@@ -638,12 +638,13 @@ tr.row:hover td{background:rgba(255,255,255,.02)}
 <!-- GOLD TICKER -->
 <div class="ticker">
   <div class="t-label"><span class="dot"></span>Live Gold · Beirut</div>
-  <div class="t-item"><span class="k">24K/g</span><span class="v">$108.40</span><span class="chg up">▲ 0.6%</span></div>
-  <div class="t-item"><span class="k">22K/g</span><span class="v">$99.37</span><span class="chg up">▲ 0.6%</span></div>
-  <div class="t-item"><span class="k">21K/g</span><span class="v">$94.85</span><span class="chg up">▲ 0.5%</span></div>
-  <div class="t-item"><span class="k">18K/g</span><span class="v">$81.30</span><span class="chg down">▼ 0.1%</span></div>
-  <div class="t-item"><span class="k">OUNCE</span><span class="v">$3,372</span><span class="chg up">▲ 0.6%</span></div>
+  <div class="t-item"><span class="k">24K/g</span><span class="v" id="tk24">—</span><span class="chg" id="tc24">—</span></div>
+  <div class="t-item"><span class="k">22K/g</span><span class="v" id="tk22">—</span><span class="chg" id="tc22">—</span></div>
+  <div class="t-item"><span class="k">21K/g</span><span class="v" id="tk21">—</span><span class="chg" id="tc21">—</span></div>
+  <div class="t-item"><span class="k">18K/g</span><span class="v" id="tk18">—</span><span class="chg" id="tc18">—</span></div>
+  <div class="t-item"><span class="k">OUNCE</span><span class="v" id="tkoz">—</span><span class="chg" id="tcoz">—</span></div>
   <div class="t-item"><span class="k">USD/LBP</span><span class="v">89,500</span><span class="chg">—</span></div>
+  <div class="t-item"><span class="k" id="tsrc" style="font-size:9.5px">connecting…</span></div>
 </div>
 
 <div class="app">
@@ -1342,7 +1343,8 @@ document.querySelectorAll('.nav-btn').forEach(function(btn){
 
 // ----- Workshop / Baradi calculator -----
 (function(){
-  var ISSUED = 50.00, tol = 1.0, RATE21 = 92.93; // $/g 21K reference
+  var ISSUED = 50.00, tol = 1.0;
+  function rate21(){ return (window.GOLD_RATE && window.GOLD_RATE[21]) || 94.85; }
   function el(id){return document.getElementById(id)}
   function num(id){var v=parseFloat(el(id).value); return (isNaN(v)||v<0)?0:v}
   function calc(){
@@ -1351,7 +1353,7 @@ document.querySelectorAll('.nav-btn').forEach(function(btn){
     var loss = ISSUED - back, pct = (loss/ISSUED)*100;
     el('lossG').textContent = loss.toFixed(2)+' g';
     el('lossP').textContent = pct.toFixed(2)+'%';
-    el('lossU').textContent = '$'+Math.max(0,loss*RATE21).toFixed(0);
+    el('lossU').textContent = '$'+Math.max(0,loss*rate21()).toFixed(0);
     var tag = el('lossTag');
     if(loss < 0){ box.className='jres over'; tag.textContent='Returned > issued — check scale'; }
     else if(pct <= tol){ box.className='jres good'; tag.textContent='Within tolerance'; }
@@ -1367,6 +1369,7 @@ document.querySelectorAll('.nav-btn').forEach(function(btn){
     });
   });
   calc();
+  document.addEventListener('goldrate', calc);
 })();
 
 // ----- Debt WhatsApp reminders -----
@@ -1412,7 +1415,7 @@ document.querySelectorAll('.acc-tab').forEach(function(t){
 
 // ================= POS v2 =================
 (function(){
-  var RATE = {24:108.40, 22:99.37, 21:94.85, 18:81.30};
+  var RATE = window.GOLD_RATE || (window.GOLD_RATE = {24:108.40, 22:99.37, 21:94.85, 18:81.30});
   var PURITY = {24:0.999, 22:0.916, 21:0.875, 18:0.750};
   var BUY_SPREAD = 0.93; // buy at 93% of sell rate
 
@@ -1631,9 +1634,116 @@ document.querySelectorAll('.acc-tab').forEach(function(t){
   });
 
   buildPicks(); render();
+  document.addEventListener('goldrate', function(){ render(); });
 
   // keep POS rate label in sync with ticker
   var rl=$('posRate'); if(rl) rl.textContent='21K RATE · $'+RATE[21].toFixed(2)+'/g';
+})();
+
+
+// ================= LIVE GOLD FEED =================
+// Source: gold-api.com  (free, CORS-enabled, no key required)
+// Returns international spot price for XAU (gold) per troy ounce in USD.
+// If the request fails the demo keeps its last known values, so nothing
+// ever renders blank in front of a client.
+(function(){
+  var OZ_TO_G   = 31.1034768;
+  var PURITY    = {24:0.999, 22:0.916, 21:0.875, 18:0.750};
+  var ENDPOINT  = 'https://api.gold-api.com/price/XAU';
+  var prevOz    = null;
+
+  window.GOLD_RATE = window.GOLD_RATE || {24:108.40, 22:99.37, 21:94.85, 18:81.30};
+
+  function $(id){ return document.getElementById(id); }
+  function fmt(n){ return '$' + n.toFixed(2); }
+
+  function paintChange(el, pct){
+    if(!el) return;
+    if(pct === null || !isFinite(pct)){ el.textContent = '—'; el.className = 'chg'; return; }
+    var up = pct >= 0;
+    el.textContent = (up ? '▲ ' : '▼ ') + Math.abs(pct).toFixed(2) + '%';
+    el.className = 'chg ' + (up ? 'up' : 'down');
+  }
+
+  function apply(oz){
+    var perGram24 = oz / OZ_TO_G;
+    var pct = prevOz ? ((oz - prevOz) / prevOz) * 100 : null;
+
+    [24,22,21,18].forEach(function(k){
+      var v = perGram24 * PURITY[k];
+      window.GOLD_RATE[k] = v;
+      var el = $('tk'+k);
+      if(el) el.textContent = fmt(v);
+      paintChange($('tc'+k), pct);
+    });
+
+    var ozEl = $('tkoz');
+    if(ozEl) ozEl.textContent = '$' + Math.round(oz).toLocaleString('en-US');
+    paintChange($('tcoz'), pct);
+
+    var src = $('tsrc');
+    if(src){
+      var t = new Date();
+      src.textContent = 'live · gold-api.com · ' +
+        t.getHours().toString().padStart(2,'0') + ':' +
+        t.getMinutes().toString().padStart(2,'0');
+      src.style.color = 'var(--green)';
+    }
+
+    var pr = $('posRate');
+    if(pr) pr.textContent = '21K RATE · ' + fmt(window.GOLD_RATE[21]) + '/g';
+
+    prevOz = oz;
+
+    // let other modules recalculate against the new rate
+    document.dispatchEvent(new CustomEvent('goldrate'));
+  }
+
+  function offline(msg){
+    var src = $('tsrc');
+    if(src){ src.textContent = msg || 'offline — last known rates'; src.style.color = 'var(--muted)'; }
+    // still paint whatever we have so nothing is blank
+    [24,22,21,18].forEach(function(k){
+      var el = $('tk'+k);
+      if(el && el.textContent === '—') el.textContent = fmt(window.GOLD_RATE[k]);
+    });
+    var ozEl = $('tkoz');
+    if(ozEl && ozEl.textContent === '—') ozEl.textContent = '$' + Math.round(window.GOLD_RATE[24]*OZ_TO_G).toLocaleString('en-US');
+  }
+
+  function fetchRate(){
+    if(!window.fetch){ offline('browser too old — showing set rates'); return; }
+    var ctl = null, timer = null;
+    try {
+      ctl = new AbortController();
+      timer = setTimeout(function(){ ctl.abort(); }, 8000);
+    } catch(e){ ctl = null; }
+
+    fetch(ENDPOINT, ctl ? {signal: ctl.signal} : undefined)
+      .then(function(r){
+        if(!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function(d){
+        if(timer) clearTimeout(timer);
+        // be tolerant about the field name the API uses
+        var oz = d && (d.price != null ? d.price
+                     : d.price_usd != null ? d.price_usd
+                     : d.rate != null ? d.rate
+                     : d.value != null ? d.value : null);
+        oz = parseFloat(oz);
+        if(!isFinite(oz) || oz <= 0) throw new Error('unexpected response');
+        apply(oz);
+      })
+      .catch(function(err){
+        if(timer) clearTimeout(timer);
+        offline('offline — last known rates');
+        if(window.console) console.warn('gold feed:', err && err.message);
+      });
+  }
+
+  fetchRate();
+  setInterval(fetchRate, 60000); // refresh every minute
 })();
 
 </script>
